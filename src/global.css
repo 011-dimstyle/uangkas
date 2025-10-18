@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+.button {
+    @apply w-[90%] text-[18px] rounded-[25px] flex justify-center p-2;
+}
