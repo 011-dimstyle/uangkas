@@ -51,7 +51,7 @@ export default function App(): React.ReactElement {
         style={{ backgroundColor: color.accent1 }}
       >
         <div className="w-full h-1/4 flex flex-col justify-center items-center">
-          <img src={theme.trim().startsWith("dark") ? "/profile-white.svg" : "/profile-black.svg"} width="80px" />
+          <img src={`profile-${theme}.svg`} width="80px" />
         </div>
         <div className="w-full flex flex-col items-center">
           <Linkbutton to="/catatan" bgColor={color.bgColor}>
@@ -72,7 +72,7 @@ export default function App(): React.ReactElement {
           <Routes>
             <Route
               path="/catatan"
-              element={<Catatan buttonCol={color.accent1} textCol={color.bgColor} />}
+              element={<Catatan accent1={color.accent1} theme={theme} />}
             />
           </Routes>
         </section>
