@@ -1,7 +1,14 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { Link, Routes, Route } from "react-router-dom";
 import Catatan from "./Catatan";
 
+interface ColorType {
+   bgColor: string;
+    textColor: string;
+    accent1: string;
+    accent2: string;
+    hoverEffect: string;
+}
 
 const Theme = {
   dark: {
@@ -11,7 +18,7 @@ const Theme = {
     accent2: "#1c398e",
     hoverEffect: "#12192F",
   },
-
+  
   light: {
     bgColor: "#EFF2F9",
     textColor: "#000000",
@@ -21,28 +28,33 @@ const Theme = {
   },
 };
 
+export const ThemeContext = createContext<{data : ColorType ,key : keyof typeof Theme} | null>(null);
+
 function Linkbutton({
   children,
-  bgColor,
   to,
 }: {
   children?: React.ReactNode;
   to: string;
   bgColor: string;
 }): React.ReactElement {
+  const color = useContext(ThemeContext)?.data;
+  
   return (
-    <Link to={to} className="button" style={{ backgroundColor: bgColor }}>
+    <Link to={to} className="button" style={{ backgroundColor: color?.bgColor}}>
       {children}
     </Link>
   );
 }
 
-export default function App(): React.ReactElement {
-  let theme: keyof typeof Theme = "dark";
-  let color = Theme[theme];
+function AppBody(): React.ReactElement | undefined{
+  const themecontext = useContext(ThemeContext);
+  if(!themecontext) return
+  const color = themecontext.data
+  const theme = themecontext.key;
 
-  return (
-    <div
+  return(
+     <div
       className="min-w-screen min-h-screen flex"
       style={{ backgroundColor: color.bgColor, color: color.textColor }}
     >
@@ -54,7 +66,7 @@ export default function App(): React.ReactElement {
           <img src={`profile-${theme}.svg`} width="80px" />
         </div>
         <div className="w-full flex flex-col items-center">
-          <Linkbutton to="/catatan" bgColor={color.bgColor}>
+          <Linkbutton to="/" bgColor={color.bgColor}>
             Catatan
           </Linkbutton>
         </div>
@@ -71,12 +83,23 @@ export default function App(): React.ReactElement {
         <section className="w-full h-[calc(100%-40px)">
           <Routes>
             <Route
-              path="/catatan"
-              element={<Catatan accent1={color.accent1} theme={theme} />}
+              path="/"
+              element={<Catatan />}
             />
           </Routes>
         </section>
       </main>
     </div>
+  )
+}
+
+export default function App(): React.ReactElement {
+  let theme: keyof typeof Theme = "dark";
+  let color = Theme[theme];
+
+  return (
+    <ThemeContext.Provider value={{data : color , key : theme}}>
+      <AppBody />
+    </ThemeContext.Provider>
   );
 }
