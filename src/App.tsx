@@ -47,7 +47,7 @@ export default function App(): React.ReactElement {
       style={{ backgroundColor: color.bgColor, color: color.textColor }}
     >
       <nav
-        className="flex flex-col items-center w-80 h-screen p-2"
+        className="flex flex-col items-center w-80 min-h-screen p-2"
         style={{ backgroundColor: color.accent1 }}
       >
         <div className="w-full h-1/4 flex flex-col justify-center items-center">
