@@ -2,24 +2,32 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { ThemeContext } from "./App";
 
-let textCardRef: React.RefObject<HTMLTextAreaElement | null>[] = [];
-
 function Card({
-  textref,
-  index
-
+  index,
+  note,
+  setNote
 }: {
-  textref: React.RefObject<HTMLTextAreaElement | null>,
-  index: number
+  index: number,
+  note: React.ReactNode[],
+  setNote : React.Dispatch<React.SetStateAction<React.ReactNode[]>>
+
 }): React.ReactElement | undefined {
+  const Cardref = useRef<HTMLTextAreaElement | null>(null);
   const themecontext = useContext(ThemeContext)
+
   if(!themecontext) return
   const accent1 = themecontext.data.accent1;
   const  theme = themecontext.key;
 
+  useEffect(()=>{
+    if(!Cardref.current) return
+    
+    Cardref.current.focus();
+  },[])
   return (
     <div
-      className="w-50 p-5 pt-0 cursor-pointer rounded-lg"
+      key={index}
+      className="card"
       style={{ backgroundColor: accent1 }}
     >
       <img src={`/note-${theme}.svg`} width="100%" />
@@ -37,18 +45,21 @@ function Card({
               e.currentTarget.disabled = true;
             }
           }}
-          ref={textref}
+          ref={Cardref}
         />
       </div>
       <div className="flex justify-end items-center gap-4 cursor-pointer mt-3">
         <button className="cursor-pointer">
           <img src={`edit-${theme}.svg`} onClick={() => {
-            if (!textCardRef[index].current) return;
-            textCardRef[index].current.disabled = false
-            console.log(textCardRef[index].current)
+            if (!Cardref.current) return;
+            Cardref.current.disabled = false;
+            Cardref.current.focus();
           }} />
         </button>
-        <button className="cursor-pointer">
+        <button className="cursor-pointer" onClick={()=>{
+          // note.splice(index, 1)
+          // setNote(...note)
+        }}>
           <img src={`delete.svg`} />
         </button>
       </div>
@@ -56,30 +67,20 @@ function Card({
   );
 }
 
-export default function Catatan({
-}: {
-}): React.ReactElement | undefined{
-  const firstNoteState: React.ReactElement[] = [];
-  const [note, setNote] = useState<React.ReactElement[]>(firstNoteState);
-  const textreference = useRef<HTMLTextAreaElement | null>(null);
+export default function Catatan(): React.ReactElement | undefined{
+  const firstNoteState: React.ReactNode[] = [];
+  const [note, setNote] = useState<React.ReactNode[]>(firstNoteState);
 
   const themecontext = useContext(ThemeContext)
   if(!themecontext) return
   const accent1 = themecontext.data.accent1;
-
-  useEffect(() => {
-    if (!textreference.current) return;
-    textCardRef.push(textreference)
-    textreference.current.focus()
-  
-  }, [note])
 
   return (
     <div className="flex gap-10 w-full h-full overflow-hidden p-5 flex-wrap">
       {note}
       <button
         onClick={() => {
-          setNote([...note, <Card textref={textreference} index={note.length} />]);
+          setNote([...note, <Card index={note.length} note={note} setNote={setNote}/>]);
         }}
         className="fixed flex justify-center items-center p-3 rounded-full w-15 h-15 text-4xl cursor-pointer bottom-10 right-10"
         style={{ backgroundColor: accent1 }}

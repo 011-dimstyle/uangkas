@@ -33,15 +33,17 @@ export const ThemeContext = createContext<{data : ColorType ,key : keyof typeof 
 function Linkbutton({
   children,
   to,
+  imgsrc
 }: {
   children?: React.ReactNode;
   to: string;
-  bgColor: string;
+  imgsrc: string
 }): React.ReactElement {
   const color = useContext(ThemeContext)?.data;
   
   return (
     <Link to={to} className="button" style={{ backgroundColor: color?.bgColor}}>
+      <img src={imgsrc} />
       {children}
     </Link>
   );
@@ -66,7 +68,7 @@ function AppBody(): React.ReactElement | undefined{
           <img src={`profile-${theme}.svg`} width="80px" />
         </div>
         <div className="w-full flex flex-col items-center">
-          <Linkbutton to="/" bgColor={color.bgColor}>
+          <Linkbutton to="/" imgsrc={`pencilnote-${theme}.svg`}>
             Catatan
           </Linkbutton>
         </div>
