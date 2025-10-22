@@ -102,6 +102,8 @@ export default function App(): React.ReactElement {
   return (
     <ThemeContext.Provider value={{data : color , key : theme}}>
       <AppBody />
+
     </ThemeContext.Provider>
+
   );
 }
