@@ -5,15 +5,16 @@ fn greet(name: &str) -> String {
 }
 
 #[tauri::command]
-fn just_testing(msg: String)-> String{
-    format!("say {}",msg)
+fn just_testing(msg: String) -> String {
+    format!("say {}", msg)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet,just_testing])
+        .invoke_handler(tauri::generate_handler![greet, just_testing])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

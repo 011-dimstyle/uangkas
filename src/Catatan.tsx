@@ -18,7 +18,6 @@ function Card({
 }): React.ReactElement | undefined {
   const Cardref = useRef<HTMLTextAreaElement | null>(null);
   const CardText = useRef<HTMLParagraphElement | null>(null);
-  const [Text, setText]  = useState<string>();
   const themecontext = useContext(ThemeContext);
 
   if (!themecontext) return;
@@ -27,8 +26,11 @@ function Card({
 
   useEffect(() => {
     if (!Cardref.current) return;
-
     Cardref.current.focus();
+
+    if (!CardText.current) return;
+    CardText.current.innerText = title[index] ?? "";
+    console.log(title)
   }, []);
   return (
     <div key={index} className="card" style={{ backgroundColor: accent1 }}>
@@ -43,19 +45,21 @@ function Card({
             if(!CardText.current) return
             CardText.current.style.display = "block"
             e.currentTarget.style.display = "none";
-            setText(e.currentTarget.value);
+            title[index] = e.currentTarget.value
+            CardText.current.innerText = e.currentTarget.value;
           }}
           onKeyDown={(e) => {
             if(!CardText.current) return
             if (e.key === "Enter" ) {
               CardText.current.style.display = "block"
-              e.currentTarget.style.display = "none"
-              setText(e.currentTarget.value);
+              e.currentTarget.style.display = "none";
+              title[index] = e.currentTarget.value;
+              CardText.current.innerText = e.currentTarget.value;
             }
           }}
           ref={Cardref}
         />
-        <p ref={CardText} className="h-24 break-words whitespace-normal overflow-auto" style={{display : "none", scrollbarWidth : "none"}}>{Text}</p>
+        <p ref={CardText} className="h-24 break-words whitespace-normal overflow-auto" style={{display : "none", scrollbarWidth : "none"}}></p>
       </div>
       <div className="flex justify-end items-center gap-4 cursor-pointer mt-3">
         <button className="cursor-pointer">
@@ -77,6 +81,7 @@ function Card({
           className="cursor-pointer"
           onClick={() => {
             delete cardarr[index];
+            delete title[index];
             setNote(cardarr);
           }}
         >
@@ -90,14 +95,13 @@ function Card({
 export default function Catatan(): React.ReactElement | undefined {
   const firstNoteState: cardobjtype = {};
   const [note, setNote] = useState<cardobjtype>(firstNoteState);  
-
   const themecontext = useContext(ThemeContext);
   if (!themecontext) return;
   const accent1 = themecontext.data.accent1;
 
   useEffect(() => {
     cardarr = {...note};
-    console.log("bello")
+    console.log()
   }, [note]);
   return (
     <div className="flex gap-10 w-full h-full overflow-hidden p-5 flex-wrap">
@@ -107,16 +111,14 @@ export default function Catatan(): React.ReactElement | undefined {
         onClick={() => {
           const index = `Card${cardarrcounter}`;  
           cardarrcounter++;
-          setNote({
-            ...note,
-            [index]: <Card index={index} setNote={setNote} />,
-          });
+          note[index] = <Card index={index} setNote={setNote} />,
+          setNote(note);
         }}
         className="fixed flex justify-center items-center p-3 rounded-full w-15 h-15 text-4xl cursor-pointer bottom-10 right-10"
         style={{ backgroundColor: accent1 }}
       >
         +
-      </button>
+      </button> 
     </div>
   );
 }

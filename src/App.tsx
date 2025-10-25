@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { Link, Routes, Route } from "react-router-dom";
 import Catatan from "./Catatan";
+import Pemasukan from "./Pemasukan";
 
 interface ColorType {
    bgColor: string;
@@ -69,7 +70,7 @@ function AppBody(): React.ReactElement | undefined{
         </div>
         <div className="w-full flex flex-col items-center">
           <Linkbutton to="/" imgsrc={`pencilnote-${theme}.svg`}>
-            Catatan
+            Pemasukan
           </Linkbutton>
         </div>
       </nav>
@@ -86,7 +87,7 @@ function AppBody(): React.ReactElement | undefined{
           <Routes>
             <Route
               path="/"
-              element={<Catatan />}
+              element={<Pemasukan />}
             />
           </Routes>
         </section>
