@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { Link, Routes, Route } from "react-router-dom";
-import Catatan from "./Catatan";
 import Pemasukan from "./Pemasukan";
+import { Command, CommandItem } from "@/components/ui/command"
 
 interface ColorType {
    bgColor: string;
@@ -43,7 +43,7 @@ function Linkbutton({
   const color = useContext(ThemeContext)?.data;
   
   return (
-    <Link to={to} className="button" style={{ backgroundColor: color?.bgColor}}>
+    <Link to={to} className="button" style={{ backgroundColor: color?.bgColor, border : `2px solid ${color?.bgColor}`}}>
       <img src={imgsrc} />
       {children}
     </Link>

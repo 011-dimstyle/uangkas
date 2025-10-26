@@ -1,18 +1,19 @@
 import React from "react";
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 export default function Pemasukan(): React.ReactElement {
   return (
-    <div className="p-5">
-      <input
-        className=""
-        type="text"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        onChange={(e) => {
-          const value = e.currentTarget.value;
-          e.currentTarget.value.replace("/d+/", value);
-        }}
+    <div className="p-5 flex items-center overflow-y-auto">
+      {/* <Input className="h-7 w-70 focus:ring-0 focus:ring-offset-0 focus:outline-none outline-none" type="text" placeholder="Rp" onChange={e => {
+        e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "")
+      }}
       />
+      <Checkbox className="h-7 w-7" onCheckedChange={e => console.log(e) }/> */}
+      <Card >
+        hei
+      </Card>
     </div>
   );
 }
