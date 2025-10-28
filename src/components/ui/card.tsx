@@ -1,92 +1,30 @@
-import * as React from "react"
+import React, { useContext} from 'react';
 
-import { cn } from "@/lib/utils"
+import { ThemeContext } from "@/App";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+function Card({
+  name
+}: { name : string
+}): React.ReactElement | undefined {
+  const themecontext = useContext(ThemeContext);
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+    if (!themecontext) return;
+    const accent1 = themecontext.data.accent1;
+    const bgCol = themecontext.data.bgColor
+    const theme = themecontext.key;
+
+
   return (
-    <div
-      data-slot="card"
-      className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
-      )}
-      {...props}
-    />
-  )
+    <div className="card" style={{ backgroundColor: accent1 }}>
+      <img src={`/note-${theme}.svg`} width="100%" />
+      <h1 className="w-full overflow-x-auto mb-5 text-center">{name}</h1>
+      <Input placeholder="Rp" type="text" onChange={e => {
+        e.currentTarget.value = e.currentTarget.value.replace(/\D/g, ""); 
+      }} />
+      <Button className="mt-2 w-full cursor-pointer border-solid border-1" style={{backgroundColor : bgCol, border : bgCol }}></Button>
+    </div>
+  );
 }
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
-      {...props}
-    />
-  )
-}
-
-function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
-      {...props}
-    />
-  )
-}
-
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-6", className)}
-      {...props}
-    />
-  )
-}
-
-function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
-      {...props}
-    />
-  )
-}
-
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-}
+export { Card }

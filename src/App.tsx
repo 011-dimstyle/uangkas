@@ -1,14 +1,16 @@
 import React, { createContext, useContext } from "react";
-import { Link, Routes, Route } from "react-router-dom";
-import Pemasukan from "./Pemasukan";
-import { Command, CommandItem } from "@/components/ui/command"
+import { Routes, Route } from "react-router-dom";
+import Pemasukan from "@/Page/Pemasukan";
+import Pengeluaran from "@/Page/Pengeluaran";
+import Setting from "@/Page/Setting";
+import { Linkbutton } from "@/components/ui/button";
 
 interface ColorType {
-   bgColor: string;
-    textColor: string;
-    accent1: string;
-    accent2: string;
-    hoverEffect: string;
+  bgColor: string;
+  textColor: string;
+  accent1: string;
+  accent2: string;
+  hoverEffect: string;
 }
 
 const Theme = {
@@ -19,7 +21,7 @@ const Theme = {
     accent2: "#1c398e",
     hoverEffect: "#12192F",
   },
-  
+
   light: {
     bgColor: "#EFF2F9",
     textColor: "#000000",
@@ -29,35 +31,19 @@ const Theme = {
   },
 };
 
-export const ThemeContext = createContext<{data : ColorType ,key : keyof typeof Theme} | null>(null);
+export const ThemeContext = createContext<{
+  data: ColorType;
+  key: keyof typeof Theme;
+} | null>(null);
 
-function Linkbutton({
-  children,
-  to,
-  imgsrc
-}: {
-  children?: React.ReactNode;
-  to: string;
-  imgsrc: string
-}): React.ReactElement {
-  const color = useContext(ThemeContext)?.data;
-  
-  return (
-    <Link to={to} className="button" style={{ backgroundColor: color?.bgColor, border : `2px solid ${color?.bgColor}`}}>
-      <img src={imgsrc} />
-      {children}
-    </Link>
-  );
-}
-
-function AppBody(): React.ReactElement | undefined{
+function AppBody(): React.ReactElement | undefined {
   const themecontext = useContext(ThemeContext);
-  if(!themecontext) return
-  const color = themecontext.data
+  if (!themecontext) return;
+  const color = themecontext.data;
   const theme = themecontext.key;
 
-  return(
-     <div
+  return (
+    <div
       className="min-w-screen min-h-screen flex"
       style={{ backgroundColor: color.bgColor, color: color.textColor }}
     >
@@ -68,9 +54,15 @@ function AppBody(): React.ReactElement | undefined{
         <div className="w-full h-1/4 flex flex-col justify-center items-center">
           <img src={`profile-${theme}.svg`} width="80px" />
         </div>
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center gap-5">
           <Linkbutton to="/" imgsrc={`pencilnote-${theme}.svg`}>
             Pemasukan
+          </Linkbutton>
+          <Linkbutton to="/pengeluaran" imgsrc={`receipt-${theme}.svg`}>
+            Pengeluaran
+          </Linkbutton>
+          <Linkbutton to="/setting" imgsrc={`setting-${theme}.svg`}>
+            Settings
           </Linkbutton>
         </div>
       </nav>
@@ -85,15 +77,14 @@ function AppBody(): React.ReactElement | undefined{
         </section>
         <section className="w-full h-[calc(100%-40px)">
           <Routes>
-            <Route
-              path="/"
-              element={<Pemasukan />}
-            />
+            <Route path="/" element={<Pemasukan />} />
+            <Route path="/pengeluaran" element={<Pengeluaran />} />
+            <Route path="/setting" element={<Setting />} />
           </Routes>
         </section>
       </main>
     </div>
-  )
+  );
 }
 
 export default function App(): React.ReactElement {
@@ -101,10 +92,8 @@ export default function App(): React.ReactElement {
   let color = Theme[theme];
 
   return (
-    <ThemeContext.Provider value={{data : color , key : theme}}>
+    <ThemeContext.Provider value={{ data: color, key: theme }}>
       <AppBody />
-
     </ThemeContext.Provider>
-
   );
 }

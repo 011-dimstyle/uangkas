@@ -8,7 +8,7 @@
 }
 
 .card {
-   @apply w-50 p-5 pt-0 cursor-pointer rounded-lg outline-none;
+   @apply w-50 p-5 pt-0 rounded-lg outline-none;
 }
 
 @theme inline {
