@@ -68,7 +68,7 @@ function Linkbutton({
   to: string;
   imgsrc: string
 }): React.ReactElement {
-  const color = React.useContext(ThemeContext)?.data;
+  const color = React.useContext(ThemeContext)?.ThemeValue.Color;
   
   return (
     <Link to={to} className="button" style={{ backgroundColor: color?.bgColor, border : `2px solid ${color?.bgColor}`}}>

@@ -1,9 +1,11 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Pemasukan from "@/Page/Pemasukan";
 import Pengeluaran from "@/Page/Pengeluaran";
+import History from "@/Page/History";
 import Setting from "@/Page/Setting";
 import { Linkbutton } from "@/components/ui/button";
+
 
 interface ColorType {
   bgColor: string;
@@ -13,7 +15,7 @@ interface ColorType {
   hoverEffect: string;
 }
 
-const Theme = {
+export const Theme = {
   dark: {
     bgColor: "#1D2440",
     textColor: "#ffffff",
@@ -31,16 +33,30 @@ const Theme = {
   },
 };
 
-export const ThemeContext = createContext<{
-  data: ColorType;
-  key: keyof typeof Theme;
-} | null>(null);
+interface ThemeValueType{ 
+  Theme: keyof typeof Theme,
+  Color: ColorType
+}
+
+interface ThemeType{
+  ThemeValue : ThemeValueType,
+  SetThemeValue : React.Dispatch<React.SetStateAction<ThemeValueType>>
+}
+
+export const ThemeContext = createContext<ThemeType | null>(null);
+
+
+
+
+
+
 
 function AppBody(): React.ReactElement | undefined {
   const themecontext = useContext(ThemeContext);
+
   if (!themecontext) return;
-  const color = themecontext.data;
-  const theme = themecontext.key;
+  const color = themecontext.ThemeValue.Color;
+  const theme = themecontext.ThemeValue.Theme;
 
   return (
     <div
@@ -50,17 +66,18 @@ function AppBody(): React.ReactElement | undefined {
       <nav
         className="flex flex-col items-center w-80 min-h-screen p-2"
         style={{ backgroundColor: color.accent1 }}
-      >
+      > 
         <div className="w-full h-1/4 flex flex-col justify-center items-center">
           <img src={`profile-${theme}.svg`} width="80px" />
         </div>
-        <div className="w-full flex flex-col items-center gap-5">
+        <div className="w-full flex flex-col items-center gap-5 ">
           <Linkbutton to="/" imgsrc={`pencilnote-${theme}.svg`}>
             Pemasukan
           </Linkbutton>
           <Linkbutton to="/pengeluaran" imgsrc={`receipt-${theme}.svg`}>
             Pengeluaran
           </Linkbutton>
+          <Linkbutton to="/history" imgsrc={`history-${theme}.svg`}>History</Linkbutton>
           <Linkbutton to="/setting" imgsrc={`setting-${theme}.svg`}>
             Settings
           </Linkbutton>
@@ -75,10 +92,11 @@ function AppBody(): React.ReactElement | undefined {
             Uang Kas
           </h1>
         </section>
-        <section className="w-full h-[calc(100%-40px)">
+        <section className="w-full h-[calc(100%-40px) overflow-auto">
           <Routes>
             <Route path="/" element={<Pemasukan />} />
             <Route path="/pengeluaran" element={<Pengeluaran />} />
+            <Route path="/history" element={<History />} />
             <Route path="/setting" element={<Setting />} />
           </Routes>
         </section>
@@ -90,9 +108,14 @@ function AppBody(): React.ReactElement | undefined {
 export default function App(): React.ReactElement {
   let theme: keyof typeof Theme = "dark";
   let color = Theme[theme];
+  const  [themeState, setThemeState]  = useState<ThemeValueType>({
+    Theme : theme,
+    Color: color
+  });
+
 
   return (
-    <ThemeContext.Provider value={{ data: color, key: theme }}>
+    <ThemeContext.Provider value={{ThemeValue: themeState, SetThemeValue : setThemeState}}>
       <AppBody />
     </ThemeContext.Provider>
   );

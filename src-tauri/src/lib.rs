@@ -6,6 +6,7 @@ fn greet(name: &str) -> String {
 
 #[tauri::command]
 fn just_testing(msg: String) -> String {
+    println!("hello world");
     format!("say {}", msg)
 }
 

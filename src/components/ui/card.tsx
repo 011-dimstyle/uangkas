@@ -10,9 +10,9 @@ function Card({
   const themecontext = useContext(ThemeContext);
 
     if (!themecontext) return;
-    const accent1 = themecontext.data.accent1;
-    const bgCol = themecontext.data.bgColor
-    const theme = themecontext.key;
+    const accent1 = themecontext.ThemeValue.Color.accent1;
+    const bgCol = themecontext.ThemeValue.Color.bgColor
+    const theme = themecontext.ThemeValue.Theme;
 
 
   return (

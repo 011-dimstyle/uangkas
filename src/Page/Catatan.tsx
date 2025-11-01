@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { ThemeContext } from "./App";
+import {ThemeContext } from "@/App";
 
 type cardobjtype = Record<string, React.ReactNode>;
 type cardtexttype = Record<string, string>;
@@ -21,8 +21,8 @@ function Card({
   const themecontext = useContext(ThemeContext);
 
   if (!themecontext) return;
-  const accent1 = themecontext.data.accent1;
-  const theme = themecontext.key;
+  const accent1 = themecontext.ThemeValue.Color.accent1;
+  const theme = themecontext.ThemeValue.Theme;
 
   useEffect(() => {
     if (!Cardref.current) return;
@@ -97,7 +97,7 @@ export default function Catatan(): React.ReactElement | undefined {
   const [note, setNote] = useState<cardobjtype>(firstNoteState);  
   const themecontext = useContext(ThemeContext);
   if (!themecontext) return;
-  const accent1 = themecontext.data.accent1;
+  const accent1 = themecontext.ThemeValue.Color.accent1;
 
   useEffect(() => {
     cardarr = {...note};

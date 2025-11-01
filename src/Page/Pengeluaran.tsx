@@ -5,5 +5,5 @@ export default function Pengeluaran(): React.ReactElement {
         <>
         
         </>
-    )
+    )       
 }
