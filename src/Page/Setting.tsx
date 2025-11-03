@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeContext, Theme } from "@/App";
+import { initdb } from "@/services/db";
+// import { invoke } from "@tauri-apps/api/core"
+
 export default function Setting(): React.ReactElement | undefined {
   const themecontext = useContext(ThemeContext);
   if (!themecontext) return;
@@ -25,6 +28,9 @@ export default function Setting(): React.ReactElement | undefined {
         )}
         <span className="sr-only">Toggle theme</span>
       </Button>
+        <Button onClick={async ()=>{
+          console.log(await initdb())
+        }}> say it </Button>
     </div>
   );
 }
